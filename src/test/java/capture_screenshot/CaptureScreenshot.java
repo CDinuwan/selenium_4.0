@@ -38,7 +38,7 @@ public class CaptureScreenshot {
         WebDriverManager.chromedriver().setup();
         WebDriver driver=new ChromeDriver();
 
-        driver.get("https://opensource-demo.orangehrmlive.com/");
+        driver.get("https://formy-project.herokuapp.com/");
         driver.manage().window().maximize();
 
         TakesScreenshot ts=(TakesScreenshot) driver;
@@ -55,11 +55,45 @@ public class CaptureScreenshot {
     //Capture screenshot of a section in page
 
     @Test
-    public void screenshotOfSectionInPage() {
+    public void screenshotOfSectionInPage() throws IOException {
         WebDriverManager.chromedriver().setup();
         WebDriver driver=new ChromeDriver();
 
-        driver.get("https://opensource-demo.orangehrmlive.com/");
+        driver.get("https://formy-project.herokuapp.com/");
         driver.manage().window().maximize();
+
+        WebElement pageSection=driver.findElement(By.xpath("//div[@class='jumbotron-fluid']"));
+
+        File src=pageSection.getScreenshotAs(OutputType.FILE);
+
+        File trg=new File("FeatureProd.png");
+        FileUtils.copyFile(src,trg);
+
+        driver.close();
+    }
+
+    //HighLight Element
+
+    @Test
+    public void highlightElementAndCaptureScreenshot() throws IOException {
+
+        WebDriverManager.chromedriver().setup();
+        WebDriver driver=new ChromeDriver();
+
+        driver.get("https://formy-project.herokuapp.com/");
+        driver.manage().window().maximize();
+
+        JavascriptExecutor js=(JavascriptExecutor)driver;
+        WebElement pageSection=driver.findElement(By.xpath("//div[@class='jumbotron-fluid']"));
+
+        js.executeScript("arguments[0].style.border='2px solid red'",pageSection);
+
+
+        File src=pageSection.getScreenshotAs(OutputType.FILE);
+
+        File trg=new File("HighLightedSection.png");
+        FileUtils.copyFile(src,trg);
+
+        driver.close();
     }
 }
